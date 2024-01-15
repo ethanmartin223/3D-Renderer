@@ -31,18 +31,16 @@ public class MainWindow extends JFrame {
         world.addModel(new Model("Rook.obj"));
 
         double i = 0;
+        camera.setPosition(0,.1,0);
+
         while (true) {
-            camera.renderFrame();
-            i+= 0.00000001;
-            camera.lookAt(i,0,0);
-            camera.setPosition(0,.15,0);
+            camera.renderFrame(true);
         }
     }
 
 
     public static void main(String[] args) {
+        System.setProperty("sun.java2d.opengl", "true");
         MainWindow window = new MainWindow();
     }
-
-
 }

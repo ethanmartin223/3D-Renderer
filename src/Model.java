@@ -1,16 +1,19 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class Model {
 
     private ArrayList<Point> vertices;
+    private ArrayList<Face> faces;
     private Point centerPoint;
     private BoundingBox bounds;
 
     public Model(String fileName) {
         vertices = new ArrayList<>();
+        faces = new ArrayList<>();
         loadModel(fileName);
     }
 
@@ -42,11 +45,27 @@ public class Model {
                 minz = Math.min(minz, point.z);
                 maxz = Math.max(maxz, point.z);
             }
+            else if (split[0].equals("f")) {
+                Face current = new Face();
+                for (int i=1;i<split.length;i++) {
+                    String[] currentPoints = split[i].split("//?");
+                    int a = Integer.parseInt(currentPoints[0])-1;
+                    int b = Integer.parseInt(currentPoints[1])-1;
+                    if (a<vertices.size() && b<vertices.size()) {
+                        current.addPoint(vertices.get(a),vertices.get(b));
+                    }
+                }
+                faces.add(current);
+            }
         }
     }
 
     public ArrayList<Point> getVertices() {
         return vertices;
+    }
+
+    public ArrayList<Face> getFaces() {
+        return faces;
     }
 
 }
